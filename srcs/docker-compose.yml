@@ -1,0 +1,139 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: 'nginx'
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    restart: on-failure
+    volumes:
+      - wordpress_data:/var/www/html/wordpress
+      - adminer_data:/var/www/html
+    networks:
+      - web-network
+    ports:
+      - "${HTTPS_PORT:-443}:443"
+      - "${ADMINER_PORT:-8080}:8080"
+    depends_on:
+      - wordpress
+
+  wordpress:
+    container_name: 'wordpress'
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    image: wordpress
+    restart: on-failure
+    volumes:
+      - wordpress_data:/var/www/html/wordpress
+    networks:
+      - web-network
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+      - redis
+
+  mariadb:
+    container_name: 'mariadb'
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    image: mariadb
+    restart: on-failure
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - web-network
+    env_file:
+      - .env
+
+  static_site:
+    container_name: 'static_site'
+    build:
+      context: ./requirements/static_site
+      dockerfile: Dockerfile
+    image: static_site
+    restart: on-failure
+    networks:
+      - web-network
+    ports:
+      - "80:80"
+
+  redis:
+    container_name: 'redis'
+    build:
+      context: ./requirements/redis
+      dockerfile: Dockerfile
+    image: redis
+    restart: on-failure
+    networks:
+      - web-network
+    volumes:
+      - redis_data:/data
+
+
+  ftp-server:
+    container_name: 'ftp-server'
+    build:
+      context: ./requirements/ftp-server
+      dockerfile: Dockerfile
+      args:
+        FTP_USER: ${FTP_USER}
+        FTP_PASS: ${FTP_PASS}
+    image: ftp-server
+    restart: on-failure
+    networks:
+      - web-network
+    ports:
+      - "${FTP_PORT:-21}:21"
+      - "${FTP_PASSIVE_PORTS:-21100-21110}:21100-21110"
+    volumes:
+      - wordpress_data:/var/www/html/wordpress
+    env_file:
+      - .env
+    depends_on:
+      - wordpress
+
+  adminer:
+    container_name: 'adminer'
+    build:
+      context: ./requirements/adminer
+      dockerfile: Dockerfile
+    image: adminer
+    restart: on-failure
+    networks:
+      - web-network
+    volumes:
+      - adminer_data:/var/www/html
+    depends_on:
+      - mariadb
+
+  todo-list:
+    container_name: 'todo-list'
+    build:
+      context: ./requirements/todo-list
+      dockerfile: Dockerfile
+    image: todo-list
+    restart: on-failure
+    networks:
+      - web-network
+    ports:
+      - "${TODO_LIST_PORT:-3000}:3000"
+    env_file:
+      - .env
+
+    
+
+    
+networks:
+  web-network:
+    driver: bridge
+
+
+volumes:
+  wordpress_data:
+  mariadb_data:
+  redis_data:
+  adminer_data:
