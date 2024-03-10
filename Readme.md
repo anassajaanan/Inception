@@ -103,3 +103,32 @@ docker start my_container
 
 ![Docker Summary](Readme/docker-images-containers.png)
 
+
+## **Managing Data & Working with Volumes**
+
+In Docker, managing application data is critical as containers are ephemeral by nature. While images are read-only templates, containers operate with a read-write layer. However, there are challenges with persistence and interaction with the host filesystem. Docker addresses these with "Volumes" and "Bind Mounts".
+
+### **Volumes**
+
+Volumes are directories on the host machine, managed by Docker, that can be mapped to container directories. They are essential for data persistence and can outlive the lifecycle of a container, allowing data to survive container removals and restarts. There are two types of volumes:
+
+- **Anonymous Volumes**: Created with **`v /some/path/in/container`** and usually removed automatically with the container.
+- **Named Volumes**: Created with **`v some-name:/some/path/in/container`** and persist beyond the life of the container, ideal for continuous data persistence.
+
+Volumes serve the purpose of storing data generated and used by containers, such as log files, uploads, and database files. Docker manages these and they're not typically intended for manual editing.
+
+### **Bind Mounts**
+
+Bind Mounts differ from volumes in that they allow a specific path on the host to be mapped into a container. Created with **`-v /absolute/path/on/your/host/machine:/some/path/inside/of/container`**, bind mounts are powerful during development, allowing live editing of code that's being served by a container. They're not recommended for production use, as containers should remain isolated from the host environment.
+
+### **Key Docker Commands for Volumes and Mounts**
+
+- **docker run -v /path/in/container IMAGE**: Create an anonymous volume inside a container.
+- **docker run -v some-name:/path/in/container IMAGE**: Create a named volume inside a container.
+- **docker run -v /path/on/your/host/machine:path/in/container IMAGE**: Create a bind mount.
+- **docker volume ls**: List all active volumes.
+- **docker volume create VOL_NAME**: Manually create a named volume (typically unnecessary).
+- **docker volume rm VOL_NAME**: Remove a volume by its name.
+- **docker volume prune**: Remove all unused volumes.
+
+By strategically using volumes and bind mounts, Docker enables not just ephemeral operations but also persistent, stateful applications that reflect changes in real-time and secure your data beyond the container's life.
