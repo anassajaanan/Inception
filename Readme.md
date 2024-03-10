@@ -97,3 +97,9 @@ docker start my_container
 - **docker image prune**: Removes unused images.
 - **docker push IMAGE**: Pushes an image to a remote registry.
 - **docker pull IMAGE**: Pulls an image from a registry.
+
+## Docker Images and Containers Summary
+
+
+![Docker Summary](Readme/docker-images-containers.png)
+
