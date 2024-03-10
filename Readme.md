@@ -132,3 +132,7 @@ Bind Mounts differ from volumes in that they allow a specific path on the host t
 - **docker volume prune**: Remove all unused volumes.
 
 By strategically using volumes and bind mounts, Docker enables not just ephemeral operations but also persistent, stateful applications that reflect changes in real-time and secure your data beyond the container's life.
+
+
+## Docker Volumes and Bind Mounts Summary
+![Docker Volumes and Bind Mounts Summary](Readme/docker-volumes.png)
