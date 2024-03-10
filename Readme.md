@@ -1,3 +1,13 @@
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Usage](#usage)
+3. [Understanding Docker: Images and Containers](#understanding-docker-images-and-containers)
+4. [Managing Data & Working with Volumes](#managing-data--working-with-volumes)
+5. [Networking: Docker Container and Cross-Container Communication](#networking-docker-container-and-cross-container-communication)
+6. [Docker Compose: An Elegant Multi-Container Orchestration](#docker-compose-an-elegant-multi-container-orchestration)
+
+
 ## **Overview**
 
 This project represents a comprehensive endeavor to create a robust, secure, and high-performance web infrastructure using Docker. By dockerizing a suite of essential services, each within its own container built from scratch, the project showcases an advanced level of container orchestration and system architecture design. Alpine Linux, known for its security, performance, and minimal footprint, serves as the base image for all containers, ensuring the infrastructure is lightweight yet capable.
@@ -29,6 +39,30 @@ The primary objectives of this project are to:
 - Deployment and orchestration with Docker Compose, enabling straightforward management of the entire infrastructure through a single declarative configuration file.
 
 This project not only serves as a testament to the practical applications of Docker in building modern web infrastructures but also as a blueprint for designing and implementing a scalable, secure, and high-performance containerized environment.
+___
+
+## **Usage**
+
+This project uses a Makefile for easy management of Docker containers and services. Below are the commands available for use:
+
+- **`make up`**: Starts all services defined in the **`docker-compose.yml`** file in detached mode and builds the containers if they don't exist or are outdated.
+- **`make pause`**: Pauses all running services without stopping the containers.
+- **`make restart`**: Restarts all services.
+- **`make down`**: Stops and removes containers, networks, and images created by **`up`**.
+- **`make down-v`**: Stops services and removes containers along with volumes, ensuring no data is left.
+- **`make down-all`**: Stops services, removes containers, volumes, and all images used, providing a clean state.
+- **`make logs`**: Displays live logs from all containers.
+- **`make logs-[service]`**: Shows live logs for a specific service (replace **`[service]`** with the service name, e.g., **`make logs-wordpress`**).
+- **`make shell-[service]`**: Opens a shell inside a specific service's container (replace **`[service]`** with the service name, e.g., **`make shell-mariadb`**).
+- **`make exec`**: Executes a command inside a running container. Use it as **`make exec service=[service] cmd="[command]"`** where **`[service]`** is the service name and **`[command]`** is the command to execute.
+- **`make rmi`**: Removes all Docker images.
+- **`make rmv`**: Removes all Docker volumes.
+- **`make rmn`**: Removes all Docker networks.
+- **`make rmc`**: Removes all Docker containers.
+- **`make clean`**: A comprehensive command that combines **`down-all`**, **`rmi`**, **`rmv`**, **`rmn`**, and **`rmc`** for cleaning up your Docker environment entirely.
+
+___
+
 
 ## **Understanding Docker: Images and Containers**
 
@@ -91,7 +125,7 @@ docker start my_container
 
 - **docker build .**: Builds an image from a Dockerfile in the current directory.
 - **docker run IMAGE_NAME**: Creates and starts a new container from an image.
-- **docker ps**: Lists running containers, and with **`a`** it includes stopped ones.
+- **docker ps**: Lists running containers, and with **`-a`** it includes stopped ones.
 - **docker rm CONTAINER**: Removes a container.
 - **docker rmi IMAGE**: Removes an image.
 - **docker image prune**: Removes unused images.
@@ -103,7 +137,7 @@ docker start my_container
 
 ![Docker Summary](Readme/docker-images-containers.png)
 
-
+___
 ## **Managing Data & Working with Volumes**
 
 In Docker, managing application data is critical as containers are ephemeral by nature. While images are read-only templates, containers operate with a read-write layer. However, there are challenges with persistence and interaction with the host filesystem. Docker addresses these with "Volumes" and "Bind Mounts".
@@ -112,8 +146,8 @@ In Docker, managing application data is critical as containers are ephemeral by 
 
 Volumes are directories on the host machine, managed by Docker, that can be mapped to container directories. They are essential for data persistence and can outlive the lifecycle of a container, allowing data to survive container removals and restarts. There are two types of volumes:
 
-- **Anonymous Volumes**: Created with **`v /some/path/in/container`** and usually removed automatically with the container.
-- **Named Volumes**: Created with **`v some-name:/some/path/in/container`** and persist beyond the life of the container, ideal for continuous data persistence.
+- **Anonymous Volumes**: Created with **`-v /some/path/in/container`** and usually removed automatically with the container.
+- **Named Volumes**: Created with **`-v some-name:/some/path/in/container`** and persist beyond the life of the container, ideal for continuous data persistence.
 
 Volumes serve the purpose of storing data generated and used by containers, such as log files, uploads, and database files. Docker manages these and they're not typically intended for manual editing.
 
@@ -136,7 +170,7 @@ By strategically using volumes and bind mounts, Docker enables not just ephemera
 
 ## Docker Volumes and Bind Mounts Summary
 ![Docker Volumes and Bind Mounts Summary](Readme/docker-volumes.png)
-
+___
 
 ## **Networking: Docker Container and Cross-Container Communication**
 
@@ -196,7 +230,7 @@ Leveraging Docker's networking capabilities allows your containers to communicat
 
 ## **Docker Networking Summary**
 ![Docker Networking Summary](Readme/docker-network.png)
-
+___
 
 ## **Docker Compose: An Elegant Multi-Container Orchestration**
 
