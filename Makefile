@@ -45,24 +45,54 @@ shell-%:
 exec:
 	$(COMPOSE) exec $(service) $(cmd)
 
+# Stop all running containers
+stop:
+	@containers=$$(docker ps -q); \
+	if [ -n "$$containers" ]; then \
+		docker stop $$containers; \
+	else \
+		echo "No containers to stop"; \
+	fi
+
 # Remove all images
 rmi:
-	docker rmi -f $(shell docker images -q)
+	@images=$$(docker images -aq); \
+	if [ -n "$$images" ]; then \
+		docker rmi -f $$images; \
+	else \
+		echo "No images to remove"; \
+	fi
 
 # Remove all volumes
 rmv:
-	docker volume rm $(shell docker volume ls -q)
+	@volumes=$$(docker volume ls -q); \
+	if [ -n "$$volumes" ]; then \
+		docker volume rm -f $$volumes; \
+	else \
+		echo "No volumes to remove"; \
+	fi
 
 # Remove all networks
 rmn:
-	docker network rm $(shell docker network ls -q)
+	@networks=$$(docker network ls --format '{{.Name}}' | grep -v 'bridge\|host\|none'); \
+	if [ -n "$$networks" ]; then \
+		docker network rm $$networks; \
+	else \
+		echo "No networks to remove"; \
+	fi
+
 
 # Remove all containers
 rmc:
-	docker rm -f $(shell docker ps -a -q)
+	@containers=$$(docker ps -aq); \
+	if [ -n "$$containers" ]; then \
+		docker rm -f $$containers; \
+	else \
+		echo "No containers to remove"; \
+	fi
 
 # Remove all images, volumes, networks and containers
-clean: down-all rmi rmv rmn rmc
+clean: stop down-all rmn rmv rmc rmi
 
 
 .PHONY: default up down down-v down-all restart logs logs-% shell-% exec rmi rmv rmn rmc clean
