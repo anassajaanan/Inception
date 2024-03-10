@@ -1,0 +1,2 @@
+srcs/requirements/static_site/files/**/* linguist-vendored
+srcs/requirements/todo-list/project/**/* linguist-vendored

@@ -46,7 +46,7 @@ Docker images are essentially the blueprints for Docker containers. They are imm
 
 A typical Dockerfile might look like this:
 
-```docker
+```Dockerfile
 
 # Use an existing image as a base
 FROM ubuntu:18.04
@@ -136,3 +136,63 @@ By strategically using volumes and bind mounts, Docker enables not just ephemera
 
 ## Docker Volumes and Bind Mounts Summary
 ![Docker Volumes and Bind Mounts Summary](Readme/docker-volumes.png)
+
+
+## **Networking: Docker Container and Cross-Container Communication**
+
+In Dockerized environments, especially with complex applications, containers often need to interact. They might need to communicate with each other, with the host machine, or with external services on the World Wide Web. Docker networking provides the features necessary to facilitate these interactions seamlessly.
+
+### **Communicating with the World Wide Web**
+
+Containers can send HTTP requests or other kinds of requests to external servers easily, without any additional configuration. For instance:
+
+```jsx
+fetch('https://some-api.com/my-data').then(...)
+```
+
+This code will work right out of the box when running inside a container, allowing your application to interact with the world wide web.
+
+### **Communicating with the Host Machine**
+
+If you need to interact with services running on the host machine (like a development database), Docker offers a special hostname **`host.docker.internal`** which resolves to the host's IP address. Here's how you can use it:
+
+```jsx
+fetch('host.docker.internal:3000/demo').then(...)
+```
+
+Using **`host.docker.internal`** allows your container to communicate with the host, translating to the appropriate IP address for outgoing requests.
+
+### **Communicating with Other Containers**
+
+For container-to-container communication within the same Docker host, you have two main options:
+
+1. **Direct IP Address**: Containers can be reached by their internal IP addresses, but this is not recommended since these IPs can change and are not convenient to work with.
+2. **Docker Networks**: This is the recommended approach. By creating a Docker network, you can attach multiple containers to the same network, allowing them to communicate using the container names as hostnames. Here's an example of how to create a network and run containers within it:
+    
+    ```bash
+    docker network create my-network
+    docker run --network my-network --name cont1 my-image
+    docker run --network my-network --name cont2 my-other-image
+    ```
+    
+    And to communicate between containers:
+    
+    ```jsx
+    fetch('cont1/my-data').then(...)
+    ```
+    
+    When containers are on the same network, Docker resolves **`cont1`** to the appropriate container, handling the internal routing automatically.
+    
+
+### **Key Docker Commands for Networking**
+
+- **docker network create SOME_NAME**: Creates a new network.
+- **docker run --network NETWORK_NAME --name CONTAINER_NAME IMAGE**: Runs a container attached to a specific network.
+- **docker network ls**: Lists all networks.
+- **docker network rm NETWORK_NAME**: Removes a network.
+
+Leveraging Docker's networking capabilities allows your containers to communicate effectively, whether they are reaching out to the internet, connecting to the host machine for development purposes, or talking to each other within a multi-container application.
+
+
+## **Docker Networking Summary**
+![Docker Networking Summary](Readme/docker-network.png)
