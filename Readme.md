@@ -8,7 +8,7 @@
 6. [Docker Compose: An Elegant Multi-Container Orchestration](#docker-compose-an-elegant-multi-container-orchestration)
 
 
-## **Overview**
+## **[Overview](#overview)**
 
 This project represents a comprehensive endeavor to create a robust, secure, and high-performance web infrastructure using Docker. By dockerizing a suite of essential services, each within its own container built from scratch, the project showcases an advanced level of container orchestration and system architecture design. Alpine Linux, known for its security, performance, and minimal footprint, serves as the base image for all containers, ensuring the infrastructure is lightweight yet capable.
 
@@ -39,9 +39,9 @@ The primary objectives of this project are to:
 - Deployment and orchestration with Docker Compose, enabling straightforward management of the entire infrastructure through a single declarative configuration file.
 
 This project not only serves as a testament to the practical applications of Docker in building modern web infrastructures but also as a blueprint for designing and implementing a scalable, secure, and high-performance containerized environment.
-___
 
-## **Usage**
+<!-- ## **Usage** -->
+## **[Usage](#usage)**
 
 This project uses a Makefile for easy management of Docker containers and services. Below are the commands available for use:
 
@@ -61,10 +61,8 @@ This project uses a Makefile for easy management of Docker containers and servic
 - **`make rmc`**: Removes all Docker containers.
 - **`make clean`**: A comprehensive command that combines **`down-all`**, **`rmi`**, **`rmv`**, **`rmn`**, and **`rmc`** for cleaning up your Docker environment entirely.
 
-___
 
-
-## **Understanding Docker: Images and Containers**
+## **[Understanding Docker: Images and Containers](#understanding-docker-images-and-containers)**
 
 ### **Docker Images**
 
@@ -137,8 +135,8 @@ docker start my_container
 
 ![Docker Summary](Readme/docker-images-containers.png)
 
-___
-## **Managing Data & Working with Volumes**
+
+## **[Managing Data & Working with Volumes](#managing-data--working-with-volumes)**
 
 In Docker, managing application data is critical as containers are ephemeral by nature. While images are read-only templates, containers operate with a read-write layer. However, there are challenges with persistence and interaction with the host filesystem. Docker addresses these with "Volumes" and "Bind Mounts".
 
@@ -170,9 +168,8 @@ By strategically using volumes and bind mounts, Docker enables not just ephemera
 
 ## Docker Volumes and Bind Mounts Summary
 ![Docker Volumes and Bind Mounts Summary](Readme/docker-volumes.png)
-___
 
-## **Networking: Docker Container and Cross-Container Communication**
+## **[Networking: Docker Container and Cross-Container Communication](#networking-docker-container-and-cross-container-communication)**
 
 In Dockerized environments, especially with complex applications, containers often need to interact. They might need to communicate with each other, with the host machine, or with external services on the World Wide Web. Docker networking provides the features necessary to facilitate these interactions seamlessly.
 
@@ -230,9 +227,8 @@ Leveraging Docker's networking capabilities allows your containers to communicat
 
 ## **Docker Networking Summary**
 ![Docker Networking Summary](Readme/docker-network.png)
-___
 
-## **Docker Compose: An Elegant Multi-Container Orchestration**
+## **[Docker Compose: An Elegant Multi-Container Orchestration](#docker-compose-an-elegant-multi-container-orchestration)**
 
 Docker Compose is an additional tool offered by the Docker ecosystem which helps with orchestration/management of multiple Containers. It can also be used for single Containers to simplify building and launching.
 
